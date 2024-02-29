@@ -2,6 +2,7 @@ import { dataSource } from '~/config/infra/postgres';
 import User from '~/entities/User';
 import userRepository from '~/repositories/userRepository';
 import GeneralServiceResponse from '~/types/generalServiceResponse.types';
+import logger from '~/utils/logger';
 
 interface IRegister {
   email: string;
@@ -18,7 +19,7 @@ export const register = async (payload: IRegister): Promise<GeneralServiceRespon
   await queryRunner.connect();
 
   // we can also access entity manager that works with connection created by a query runner:
-  const userRepo = await queryRunner.manager.withRepository(userRepository);
+  const userRepo = queryRunner.manager.withRepository(userRepository);
 
   // lets now open a new transaction:
   await queryRunner.startTransaction();
@@ -43,7 +44,7 @@ export const register = async (payload: IRegister): Promise<GeneralServiceRespon
 
     return { error: false, data: createUser, msg: null, statusCode: 400 };
   } catch (e) {
-    console.log(ctx, e);
+    logger.error({ ctx, error: e });
     // since we have errors let's rollback changes we made
     await queryRunner.rollbackTransaction();
 

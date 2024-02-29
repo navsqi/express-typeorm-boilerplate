@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { basicAuth } from '~/middlewares/basicAuth';
-import authVal from '~/validations/authVal';
+import authVal from '~/routes/v1/validations/authVal';
 
 import * as authController from '../../controllers/authController';
 

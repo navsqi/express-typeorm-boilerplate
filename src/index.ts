@@ -1,10 +1,10 @@
 import 'dotenv/config';
 import 'reflect-metadata';
-import '~/config/checkEnv';
-import createServer from './createServer';
-import connect from './utils/connect';
+import './config/checkEnv';
 import './utils/customErrorValidation';
 import './utils/customSuccess';
+import createServer from './createServer';
+import connect from './utils/connect';
 import logger from './utils/logger';
 
 process.on('uncaughtException', (err) => {

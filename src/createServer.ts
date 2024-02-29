@@ -1,12 +1,11 @@
+import 'reflect-metadata';
 import cors from 'cors';
 import express from 'express';
 import actuator from 'express-actuator';
-import morgan from 'morgan';
-import 'reflect-metadata';
 import globalError from './middlewares/globalError';
-// import { redisCreateConnection } from './config/redis';
 import routes from './routes';
 import CustomError from './utils/customError';
+import morganMiddleware from './utils/logger-morgan';
 
 const createServer = () => {
   const app = express();
@@ -15,8 +14,9 @@ const createServer = () => {
   app.use(cors());
   app.options('*', cors());
 
+  app.use(morganMiddleware);
+
   if (process.env.NODE_ENV === 'development') {
-    app.use(morgan('dev'));
     app.use(actuator());
   }
 
